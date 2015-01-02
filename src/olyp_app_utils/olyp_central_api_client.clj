@@ -1,11 +1,15 @@
 (ns olyp-app-utils.olyp-central-api-client
   (:require [org.httpkit.client :as http]
             cheshire.core
-            [clojure.tools.logging :as log]))
+            [clojure.tools.logging :as log])
+  (:import [com.fasterxml.jackson.core JsonParseException]))
 
 (defn get-response-body [res]
   (if (.startsWith (get-in res [:headers :content-type] "") "application/json")
-    (cheshire.core/parse-string (:body res))
+    (try
+      (cheshire.core/parse-string (:body res))
+      (catch JsonParseException e
+        (:body res)))
     (:body res)))
 
 (defmacro handle-res [perform-res res-binding & handlers]
