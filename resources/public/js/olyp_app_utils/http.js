@@ -16,7 +16,7 @@
                         deferred.resolve(xhr.responseText);
                     }
                 } else {
-                    deferred.reject({status: status, body: xhr.responseText, xhr: xhr});
+                    deferred.reject({method: method, path: path, status: status, body: xhr.responseText, xhr: xhr});
                 }
             };
             if (body) {
